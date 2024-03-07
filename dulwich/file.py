@@ -23,6 +23,7 @@
 import os
 import sys
 import warnings
+from io import BytesIO
 from typing import ClassVar, Set
 
 
@@ -91,6 +92,8 @@ def GitFile(filename, mode="rb", bufsize=-1, mask=0o644):
         raise OSError("text mode not supported for Git files")
     if "w" in mode:
         return _GitFile(filename, mode, bufsize, mask)
+    if isinstance(filename, BytesIO):
+        return filename
     else:
         return open(filename, mode, bufsize)
 
